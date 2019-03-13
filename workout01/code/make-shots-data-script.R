@@ -1,8 +1,8 @@
 ##################################
 ##Title: make-shots-data-script.R
-##Description:
-##Inputs:
-##Outputs:
+##Description: Cleans and prepares data for use in making charts
+##Inputs:csv files of each players shot stats
+##Outputs:combined csv file of shot data, summary files for each player
 ###################################
 
 iguodala <- read.csv("../workout01/data/andre-iguodala.csv", stringsAsFactors = FALSE)
@@ -17,8 +17,6 @@ durant$name <- "Kevin Durant"
 thompson$name <- "Klay Thompson"
 curry$name <- "Stephen Curry"
 
-
-       
 iguodala[iguodala == "n"] <- "shot_made_no"
 iguodala[iguodala == "y"] <- "shot_made_yes"
 green[green == "n"] <- "shot_made_no"
@@ -42,7 +40,28 @@ thompson$minute <- thompson$period_12 - thompson$minutes_remaining
 curry$period_12 <- as.integer(curry$period * 12)
 curry$minute <- curry$period_12 - curry$minutes_remaining
 
-sink(file="../workout01/output/andre-iguodala-summary.txt")
-summary(iguodala)
+sink("../workout01/output/andre-iguodala-summary.txt")
+print(summary(iguodala))
+sink()
+sink("../workout01/output/draymond-green-summary.txt")
+print(summary(green))
+sink()
+sink("../workout01/output/kevin-durant-summary.txt")
+print(summary(durant))
+sink()
+sink("../workout01/output/klay-thompson-summary.txt")
+print(summary(thompson))
+sink()
+sink("../workout01/output/stephen-curry-summary.txt")
+print(summary(curry))
 sink()
 
+b1 <- rbind(iguodala, green)
+b2 <- rbind(durant, thompson)
+b3 <- rbind(b1, b2)
+binded_table <- rbind(b3, curry)
+
+write.table(binded_table, file='../workout01/data/shots-data.csv', sep = ",")
+sink("../workout01/output/shots-data-summary.txt")
+print(summary(binded_table))
+sink()
