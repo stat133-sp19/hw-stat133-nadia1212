@@ -1,8 +1,8 @@
 ##################################
 ##Title: make-shots-charts-script.R
-##Description:
-##Inputs:
-##Outputs:
+##Description: uses shot data to create graphics 
+##Inputs: csv file containing shot data
+##Outputs: pdf and png graphics charting the locations of shots made for each player
 ###################################
 
 library(grid)
