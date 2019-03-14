@@ -21,7 +21,7 @@ iguodala[iguodala == "n"] <- "shot_made_no"
 iguodala[iguodala == "y"] <- "shot_made_yes"
 green[green == "n"] <- "shot_made_no"
 green[green == "y"] <- "shot_made_yes"
-durant[druant == "n"] <- "shot_made_no"
+durant[durant == "n"] <- "shot_made_no"
 durant[durant == "y"] <- "shot_made_yes"
 thompson[thompson == "n"] <- "shot_made_no"
 thompson[thompson == "y"] <- "shot_made_yes"
@@ -65,3 +65,4 @@ write.table(binded_table, file='../workout01/data/shots-data.csv', sep = ",")
 sink("../workout01/output/shots-data-summary.txt")
 print(summary(binded_table))
 sink()
+

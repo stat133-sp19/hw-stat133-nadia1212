@@ -1,0 +1,82 @@
+---
+title: "workout01-nadia-aquil.Rmd"
+author: "Nadia Aquil"
+date: "3/5/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(grid)
+library(jpeg)
+library(ggplot2)
+library(dplyr)
+
+shots_data <- read.csv("../data/shots-data.csv", stringsAsFactors = FALSE)
+
+ai <- shots_data[shots_data$name == "Andre Iguodala", ]
+dg <- shots_data[shots_data$name == "Draymond Green", ]
+kd <- shots_data[shots_data$name == "Kevin Durant", ]
+kt <- shots_data[shots_data$name == "Klay Thompson", ]
+sc <- shots_data[shots_data$name == "Stephen Curry", ]
+
+
+
+get_row <- function(dat, n) {
+  yes <- sum(dat$shot_made_flag == "shot_made_yes")
+  total <- sum(dat$shot_made_flag == "shot_made_yes") + sum(dat$shot_made_flag == "shot_made_no")
+  perc_made <- yes/total
+  return(c(n, yes, total, perc_made))
+  }
+  
+twopt_table <- c(get_row(ai[ai$shot_type == "2PT Field Goal", ], "Andre Iguodala"),
+                 get_row(dg[dg$shot_type == "2PT Field Goal", ], "Draymond Green"),
+                 get_row(kd[kd$shot_type == "2PT Field Goal", ], "Kevin Durant"),
+                 get_row(kt[kt$shot_type == "2PT Field Goal", ], "Klay Thompson"),
+                 get_row(sc[sc$shot_type == "2PT Field Goal", ], "Stephen Curry"))
+
+twopt_table <- matrix(twopt_table, ncol = 4, nrow = 5, byrow = TRUE)
+colnames(twopt_table) <- c("name", "total", "made", "perc_made")
+
+twopt_table <- data.frame(twopt_table)
+arrange(twopt_table, perc_made, desc(perc_made))
+
+
+
+
+threept_table <- c(get_row(ai[ai$shot_type == "3PT Field Goal", ], "Andre Iguodala"),
+                 get_row(dg[dg$shot_type == "3PT Field Goal", ], "Draymond Green"),
+                 get_row(kd[kd$shot_type == "3PT Field Goal", ], "Kevin Durant"),
+                 get_row(kt[kt$shot_type == "3PT Field Goal", ], "Klay Thompson"),
+                 get_row(sc[sc$shot_type == "3PT Field Goal", ], "Stephen Curry"))
+
+threept_table <- matrix(threept_table, ncol = 4, nrow = 5, byrow = TRUE)
+colnames(threept_table) <- c("name", "total", "made", "perc_made")
+
+threept_table <- data.frame(threept_table)
+threept_table
+arrange(threept_table, perc_made, desc(perc_made))
+
+
+allpt_table <- c(get_row(ai, "Andre Iguodala"),
+                 get_row(dg, "Draymond Green"),
+                 get_row(kd, "Kevin Durant"),
+                 get_row(kt, "Klay Thompson"),
+                 get_row(sc, "Stephen Curry"))
+
+allpt_table <- matrix(allpt_table, ncol = 4, nrow = 5, byrow = TRUE)
+colnames(allpt_table) <- c("name", "total", "made", "perc_made")
+
+allpt_table <- data.frame(allpt_table)
+allpt_table
+arrange(allpt_table, perc_made, desc(perc_made))
+
+
+```
+
+
+The purpose of this report is to gain some insights into the shooting statistics of five players from the Golden State Warriors: Andre Iguodala, Draymond Green, Kevin Durant, Klay Thompson, and Stephen Curry. 
+Using data about shots made and attempted during the 2016 season, we can learn things about which players are most successful with their shots and about what types of shooting work for each player. 

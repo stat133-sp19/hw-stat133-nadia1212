@@ -11,3 +11,8 @@ shot_distance,
 opponent,
 x: x coordinate of player's position when making shot 
 y: y coordinate of player's position when making shot
+
+Missing values are encoded as
+Number of rows:
+Number of columns:
+Recommended data type:
