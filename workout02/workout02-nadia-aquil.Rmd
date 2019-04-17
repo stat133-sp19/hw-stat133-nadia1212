@@ -1,0 +1,154 @@
+---
+title: "workout02-nadia-aquil.Rmd"
+author: "Nadia Aquil"
+date: "4/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+library(ggplot2)
+```
+
+```{r}
+future_value <- function(amount, rate, years){
+  return(amount*((1+rate)^years))
+}
+
+annuity <- function(contrib, rate, years){
+  return(contrib*(((1+rate)^years - 1)/rate))
+}
+growing_annuity <- function(contrib, rate, growth, years){
+  n <- (1+rate)^years - (1+growth)^years
+  return(contrib * (n/(rate - growth)))
+}
+```
+
+```{r}
+ui <- fluidPage(
+  titlePanel("Savings Simulation"),
+  
+     # Sidebar with a slider input for number of bins 
+   sidebarLayout(
+      fluidRow(
+         column(4, wellPanel(sliderInput("initial",
+                     "Initial amount",
+                     min = 0,
+                     max = 100000,
+                     value = 1000,
+                     step = 500))),
+         column(4, wellPanel(sliderInput("rate", "Return rate (in %)",
+                     min = 0, max = 20,
+                     value = 5, step = .1))),
+         column(4, wellPanel(sliderInput("annual", "Annual Contribution",
+                     min = 0, max = 50000,
+                     value = 2000,
+                     step = 500))),
+          column(4, wellPanel(sliderInput("growth_rate", "Growth Rate (in %)",
+                     min = 0, max = 20,
+                     value = 2, step = .1))),
+         column(4, wellPanel(sliderInput("years", "Years",
+                     min = 0, max = 50,
+                     value = 20))),
+          column(4, wellPanel(selectInput("facet", "Facet?",
+                      choices = c("yes", "no")))
+          )
+      ),
+      
+      # Show a plot of the generated distribution
+      mainPanel(
+         plotOutput("distPlot"),
+    
+         tableOutput("table")
+       
+      )
+   )
+  
+)
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+  
+  dat <- reactive({
+    year <- 0
+    amt <- input$initial
+    no_contrib <- rep(amt, input$years)
+    fixed_contrib <- rep(amt, input$years)
+    growing_contrib <- rep(amt, input$years)
+ 
+    rate <- input$rate * .01
+    growth <- input$growth_rate * .01
+    contrib <- input$annual
+    for (i in 0:input$years - 1){
+      no_contrib[i+ 1] <- future_value(amt, rate, year)
+      fixed_contrib[i + 1] <- future_value(amt, rate, year)  + annuity(contrib, rate, year)
+      growing_contrib[i + 1] <- future_value(amt, rate, year)  + growing_annuity(contrib, rate, growth, year)
+      year <- year + 1
+    }
+
+    year <- seq(1, input$years)
+    modalities <- rbind(year, no_contrib)
+    modalities <- rbind(modalities, fixed_contrib)
+    modalities <- rbind(modalities, growing_contrib)
+    modalities <- t(modalities)
+    modalities <- data.frame(modalities)
+    modalities <- reshape2::melt(modalities, id.var = 'year')
+    dat <- modalities
+    return(dat)
+  })
+  
+  tab <- reactive({
+    year <- 0
+    amt <- input$initial
+    no_contrib <- rep(0, input$years)
+    fixed_contrib <- rep(0, input$years)
+    growing_contrib <- rep(0, input$years)
+ 
+    rate <- input$rate * .01
+    growth <- input$growth_rate * .01
+    contrib <- input$annual
+    for (i in 0:input$years -1){
+      no_contrib[i + 1] <- future_value(amt, rate, year)
+      fixed_contrib[i + 1] <- future_value(amt, rate, year)  + annuity(contrib, rate, year)
+      growing_contrib[i + 1] <- future_value(amt, rate, year)  + growing_annuity(contrib, rate, growth, year)
+      year <- year + 1
+    }
+
+    year <- seq(1, input$years)
+  
+    modalities <- rbind(year, no_contrib)
+    modalities <- rbind(modalities, fixed_contrib)
+    modalities <- rbind(modalities, growing_contrib)
+    tab <- t(modalities)
+    return(tab)
+  })
+  
+   output$distPlot <- renderPlot({
+     if (input$facet == "yes"){
+       ggplot(data = dat(), aes(x = year, y = value, col=variable)) +
+    geom_line() +
+    ggtitle("Timelines") + 
+      xlab("Year") +
+      ylab("Amount") + 
+      geom_area(aes(fill = variable)) +
+    facet_wrap(. ~ variable)
+     }   
+     
+     else{
+       ggplot(data = dat(), aes(x = year, y = value, col=variable)) +
+      geom_line() + 
+      ggtitle("Timelines") + 
+      xlab("Year") +
+      ylab("Amount")
+     }
+   })
+
+   output$table <- renderTable(
+     tab(), bordered = TRUE, title = "Balances"
+     )
+
+}
+shinyApp(ui = ui, server = server)
+
+
+```
