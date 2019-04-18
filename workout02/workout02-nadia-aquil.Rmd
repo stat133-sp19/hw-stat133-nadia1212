@@ -6,26 +6,41 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(shiny)
 library(ggplot2)
+library(rsconnect)
 ```
 
-```{r}
+```{r, eval = TRUE, echo=FALSE}
+
+#' @title future_value
+#' @description finds future value of savings
+#' @param amount, rate, years: starting amount, return rate in percent, and time in years
+#' @return computed future value
 future_value <- function(amount, rate, years){
   return(amount*((1+rate)^years))
 }
 
+#' @title annuity
+#' @description finds future value of annuity
+#' @param contrib, rate, years: initial contribution, return rate in percent, and time in years
+#' @return computed savings value
 annuity <- function(contrib, rate, years){
   return(contrib*(((1+rate)^years - 1)/rate))
 }
+
+#' @title annuity
+#' @description finds future value of growing annuity
+#' @param contrib, rate, growth, years: initial contribution, return rate in percent, growth rate in percent, and time in years
+#' @return computed savings value
 growing_annuity <- function(contrib, rate, growth, years){
   n <- (1+rate)^years - (1+growth)^years
   return(contrib * (n/(rate - growth)))
 }
 ```
 
-```{r}
+```{r, eval= TRUE, echo=FALSE}
 ui <- fluidPage(
   titlePanel("Savings Simulation"),
   
@@ -52,15 +67,17 @@ ui <- fluidPage(
                      min = 0, max = 50,
                      value = 20))),
           column(4, wellPanel(selectInput("facet", "Facet?",
-                      choices = c("yes", "no")))
+                      choices = c("no", "yes")))
           )
       ),
       
       # Show a plot of the generated distribution
       mainPanel(
          plotOutput("distPlot"),
+         
+      
     
-         tableOutput("table")
+     tableOutput("table")
        
       )
    )
@@ -115,11 +132,12 @@ server <- function(input, output) {
     }
 
     year <- seq(1, input$years)
-  
+    row1 <- c(0, amt, amt, amt)
     modalities <- rbind(year, no_contrib)
     modalities <- rbind(modalities, fixed_contrib)
     modalities <- rbind(modalities, growing_contrib)
     tab <- t(modalities)
+    tab <- rbind(row1, tab)
     return(tab)
   })
   
@@ -144,8 +162,13 @@ server <- function(input, output) {
    })
 
    output$table <- renderTable(
-     tab(), bordered = TRUE, title = "Balances"
+     tab(), title = "balances", bordered = TRUE
      )
+   
+     output$text <- renderText({
+        paste("\n", "\n")
+      })
+
 
 }
 shinyApp(ui = ui, server = server)
