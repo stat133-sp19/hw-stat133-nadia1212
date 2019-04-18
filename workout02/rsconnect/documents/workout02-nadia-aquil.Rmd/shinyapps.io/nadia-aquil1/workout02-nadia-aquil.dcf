@@ -5,6 +5,6 @@ account: nadia-aquil1
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 873464
-bundleId: 2020108
+bundleId: 2020147
 url: https://nadia-aquil1.shinyapps.io/workout02-nadia-aquil/
-when: 1555548871.95178
+when: 1555549954.10808

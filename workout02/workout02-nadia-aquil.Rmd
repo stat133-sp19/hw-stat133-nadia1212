@@ -1,5 +1,5 @@
 ---
-title: "workout02-nadia-aquil.Rmd"
+title: "workout02"
 author: "Nadia Aquil"
 date: "4/5/2019"
 output: html_document
@@ -73,9 +73,11 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
+        titlePanel("Timelines"),
+        
          plotOutput("distPlot"),
          
-      
+         titlePanel("Balances"),
     
      tableOutput("table")
        
@@ -145,7 +147,7 @@ server <- function(input, output) {
      if (input$facet == "yes"){
        ggplot(data = dat(), aes(x = year, y = value, col=variable)) +
     geom_line() +
-    ggtitle("Timelines") + 
+    ggtitle("Three Modes of Investing") + 
       xlab("Year") +
       ylab("Amount") + 
       geom_area(aes(fill = variable)) +
@@ -155,7 +157,7 @@ server <- function(input, output) {
      else{
        ggplot(data = dat(), aes(x = year, y = value, col=variable)) +
       geom_line() + 
-      ggtitle("Timelines") + 
+      ggtitle("Three Modes of Investing") + 
       xlab("Year") +
       ylab("Amount")
      }
