@@ -1,4 +1,5 @@
 library(testthat)
 library(binomial)
 
-test_check("binomial")
+test_file("tests/testthat/tests.R")
+
