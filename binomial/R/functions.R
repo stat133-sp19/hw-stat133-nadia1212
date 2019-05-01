@@ -41,10 +41,14 @@ aux_variance <- function(trials, prob){
   return(trials*prob*(1-prob))
 }
 
+
 #returns most likely number of success in n trials
 aux_mode <- function(trials, prob){
-  n <- round((trials*prob) + prob)
-  return( n - 1)
+  x <- (trials*prob) + prob
+  if (x%%1 == 0){
+    return(c(x, x-1))
+  }
+  return(floor(x))
 }
 
 aux_skewness <- function(trials, prob){
@@ -61,10 +65,20 @@ aux_kurtosis <- function(trials, prob){
 #' @param k number of success
 #' @return number of combinations
 bin_choose <- function(n, k){
-  if (k > n){
-    stop("k cannot be greater than n")
+  if (length(k) == 1){
+    if (k > n){
+      stop("k cannot be greater than n")
+    }
+    return(factorial(n)/(factorial(k)*factorial(n-k)))
   }
-  return(factorial(n)/(factorial(k)*factorial(n-k)))
+  result <- rep(0, length(k))
+  for (i in 1:length(k)){
+    if (k[i] > n){
+      stop("k cannot be greater than n")
+    }
+    result[i] <- (factorial(n)/(factorial(k[i])*factorial(n-k[i])))
+  }
+  return(result)
 }
 
 #' @title bin_probability
@@ -76,11 +90,44 @@ bin_choose <- function(n, k){
 bin_probability <- function(success, trials, prob){
   check_trials(trials)
   check_prob(prob)
-  check_success(success)
+  check_success(success, trials)
 
   return(bin_choose(trials, success) * (prob^success)*((1-prob)^(trials - success)))
 
 }
 
+#' @title bin_distribution
+#' @description creates data frame of binomial distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return data.frame with two classes: c("bindis", "data.frame")
+bin_distribution <- function(trials, prob){
+  col_names <- c("success", "probability")
+  success <- seq(0, trials, 1)
+  probability <- bin_probability(0:trials, trials, prob)
+  df <- data.frame(success, probability)
+  return(df)
+}
+#' @export
+plot.bindis <- function(dis){
+  plot(dis)
+}
+
+#' @title bin_cumulative
+#' @description creates data frame of binomial distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return data.frame with two classes: c("bincum", "data.frame")
+bin_cumulative <- function(trials, prob){
+  col_names <- c("success", "probability", "cumulative")
+  success <- seq(0, trials, 1)
+  probability <- bin_probability(0:trials, trials, prob)
+  cumulative <- probability
+  for (i in 2:length(cumulative)){
+    cumulative[i] <- cumulative[i - 1] + cumulative[i]
+  }
+  df <- data.frame(success, probability, cumulative)
+  return(df)
+}
 
 

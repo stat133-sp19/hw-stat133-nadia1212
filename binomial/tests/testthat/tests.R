@@ -31,10 +31,10 @@ test_that("aux_variance works as expected", {
 
 })
 
-
 test_that("aux_mode works as expected", {
   expect_equal(aux_mode(10, .3), 3)
-
+  expect_equal(aux_mode(10, .5), 5)
+  expect_equal(aux_mode(5, .5), c(3, 2))
 })
 
 
@@ -58,7 +58,8 @@ test_that("bin_choose works as expected", {
 })
 
 test_that("bin_probability works as expected", {
-  expect_equal(bin_probability(success = 2, trials = 5, prob = 0.5), .3125)
+  expect_error(bin_probability(2, 5, 5))
+  expect_equal(bin_probability(2, 5, .5), .3125)
   expect_equal(bin_probability(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
 
 })
