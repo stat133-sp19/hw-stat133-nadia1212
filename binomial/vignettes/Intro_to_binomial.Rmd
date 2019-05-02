@@ -52,3 +52,23 @@ bin_cumulative(trials = 5, prob = 0.5)
 plot(bin_cumulative(trials = 5, prob = 0.5))
 ```
 
+##Creating a binomial random variable object
+The function bin_variable() creates a binomial random variable object of class "binvar". It creates a object with a list of named elements of the variable object, such as number of trials, probability of success, and other summary statistics. By using the methods print, summary, or print.summary on this object, you can see the various statistics of the random variable object. 
+```{r}
+bin1 <- bin_variable(trials = 10, p = 0.3)
+bin1
+bin_sum <- summary(bin1)
+bin_sum
+```
+
+##Functions of measures
+The binomial package also provides functions for each of the following measures: mean, variance, mode, skewness, and kurtosis. These functions are invoked as follows:
+
+```{r}
+#summary statistics binomial variable with 10 trials and .3 probability of success per trial
+bin_mean(trials = 10, prob = .3)
+bin_variance(trials = 10, prob = .3)
+bin_mode(trials = 10, prob = .3)
+bin_skewness(trials = 10, prob = .3)
+bin_kurtosis(trials = 10, prob = .3)
+```

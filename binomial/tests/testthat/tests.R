@@ -23,11 +23,16 @@ context("Summary Measures")
 
 test_that("aux_mean works as expected", {
   expect_equal(aux_mean(10, .3), 3)
+  expect_equal(aux_mean(1, 1), 1)
+  expect_equal(aux_mean(5, .6), 3)
+
 
 })
 
 test_that("aux_variance works as expected", {
   expect_equal(aux_variance(10, .3), 2.1)
+  expect_equal(aux_variance(1, 1), 0)
+  expect_equal(aux_variance(5, .6), 1.2)
 
 })
 
