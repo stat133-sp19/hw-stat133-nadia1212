@@ -67,6 +67,7 @@ test_that("bin_probability works as expected", {
 test_that("bin_distrubution works as expected", {
   res <- data.frame(c(0, 1, 2, 3, 4, 5), c(0.03125, 0.15625, 0.31250, 0.31250, 0.15625, 0.03125))
   colnames(res) <- c("success", "probability")
+  class(res) <- c("bindis", "data.frame")
   expect_error(bin_distrubtion(2, 5, 5))
   expect_equal(bin_distribution(5, .5), res)
   #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
@@ -77,6 +78,7 @@ test_that("bin_cumulative works as expected", {
   res <- data.frame(c(0, 1, 2, 3, 4, 5), c(0.03125, 0.15625, 0.31250, 0.31250, 0.15625, 0.03125),
                     c(0.03125, 0.18750, 0.50000, 0.81250, 0.96875, 1.00000))
   colnames(res) <- c("success", "probability", "cumulative")
+  class(res) <- c("bincum", "data.frame")
   expect_error(bin_cumulative(2, 5, 5))
   expect_equal(bin_cumulative(5, .5), res)
   #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))

@@ -51,9 +51,12 @@ aux_mode <- function(trials, prob){
   return(floor(x))
 }
 
+#calcuates skewness of probability distribution
 aux_skewness <- function(trials, prob){
   return((1- 2*prob)/sqrt(aux_variance(trials, prob)))
 }
+
+#calculates kurtosis of a pboability distribution
 aux_kurtosis <- function(trials, prob){
   t <- 1 - 6*prob*(1-prob)
   return(t/aux_variance(trials, prob))
@@ -106,6 +109,7 @@ bin_distribution <- function(trials, prob){
   success <- seq(0, trials, 1)
   probability <- bin_probability(0:trials, trials, prob)
   df <- data.frame(success, probability)
+  class(df) <- c("bindis", "data.frame")
   return(df)
 }
 #' @export
@@ -129,6 +133,7 @@ bin_cumulative <- function(trials, prob){
     cumulative[i] <- cumulative[i - 1] + cumulative[i]
   }
   df <- data.frame(success, probability, cumulative)
+  class(df) <- c("bincum", "data.frame")
   return(df)
 }
 
@@ -148,15 +153,96 @@ plot.bincum <- function(cum){
 bin_variable <- function(trials, prob){
   check_trials(trials)
   check_prob(prob)
-  binvar <- list(trials="trials", prob="prob")
-  class(binvar) <- binvar
+  binvar <- list(trials, prob)
+  names(binvar) <- c("trials", "prob")
+  class(binvar) <- c("binvar", "data.frame")
   return(binvar)
 }
 
 #' @export
-print.binvar(){
-  return("Binomial variable \n Parameters \n -number of trials: " + trials +
-           "-prob of success: " + prob)
+print.binvar <- function(binvar){
+  cat("Binomial variable \n Parameters \n - number of trials: ", binvar$trials, "\n - prob of success: ", binvar$prob )
 }
+
+#' @export
+summary.binvar <- function(binvar){
+  trials <- binvar[[1]]
+  prob <- binvar[[2]]
+  res <- list(trials, prob, aux_mean(trials, prob), aux_variance(trials, prob),
+              aux_mode(trials, prob), aux_skewness(trials, prob), aux_kurtosis(trials, prob))
+  class(res) <- "summary.binvar"
+  names(res) <- c("trials", "prob", "mean", "variance", "mode", "skewness", "kurtosis")
+  return(res)
+}
+
+#' @export
+print.summary.binvar <- function(summary.binvar){
+  s <- summary.binvar
+  cat("Binomial variable \n Parameters \n - number of trials: ", s$trials, "\n - prob of success: ", s$prob,
+      "\n Measures \n - mean:", s$mean,
+      "\n - variance: ", s$variance,
+      "\n - mode: ", s$mode,
+      "\n - skewness: ", s$skewness,
+      "\n - kurtosis: ", s$kurtosis)
+}
+
+#' @title bin_mean
+#' @description finds expected value of distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return mean of binomial distribution
+bin_mean <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  return(aux_mean(trials, prob))
+}
+
+#' @title bin_variance
+#' @description finds variance of distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return variance of binomial distribution
+bin_variance <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  return(aux_variance(trials, prob))
+}
+
+#' @title bin_mode
+#' @description finds mode of distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return mode of binomial distribution
+bin_mode <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  return(aux_mode(trials, prob))
+}
+
+#' @title bin_skewness
+#' @description finds skewness of distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return skewness of binomial distribution
+bin_skewness <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  return(aux_skewness(trials, prob))
+}
+
+#' @title bin_kurtosis
+#' @description finds kurtosis of distribution
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return kurtosis of binomial distribution
+bin_kurtosis <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  return(aux_kurtosis(trials, prob))
+}
+
+
+
+
 
 
