@@ -40,12 +40,15 @@ test_that("aux_mode works as expected", {
 
 test_that("aux_skewness works as expected", {
   expect_equal(aux_skewness(10, .3), .2760262, tolerance = .01)
-
+  expect_equal(aux_skewness(10, .4), 0.1290994, tolerance = .01)
+  expect_equal(aux_skewness(1, .5), 0, tolerance = .01)
 })
 
 
 test_that("aux_kurtosis works as expected", {
   expect_equal(aux_kurtosis(10, .3), -0.1238095, tolerance= .01)
+  expect_equal(aux_kurtosis(10, .4), -0.1833333, tolerance= .01)
+  expect_equal(aux_kurtosis(50, .8), 0.005, tolerance= .01)
 
 })
 
@@ -70,7 +73,7 @@ test_that("bin_distrubution works as expected", {
   class(res) <- c("bindis", "data.frame")
   expect_error(bin_distrubtion(2, 5, 5))
   expect_equal(bin_distribution(5, .5), res)
-  #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
+  expect_error(bin_distribution(0,0))
 
 })
 
@@ -81,7 +84,7 @@ test_that("bin_cumulative works as expected", {
   class(res) <- c("bincum", "data.frame")
   expect_error(bin_cumulative(2, 5, 5))
   expect_equal(bin_cumulative(5, .5), res)
-  #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
+  expect_error(bin_distribution(0, 0, 0))
 
 })
 
