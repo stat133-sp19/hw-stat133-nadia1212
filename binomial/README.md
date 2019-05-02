@@ -1,0 +1,1 @@
+This project is a package that implements functions for calculating probabilities of a Binomial random variable, and related calculations such as the probability distribution, the expected value, variance, mode, skewness, and kurtosis.
