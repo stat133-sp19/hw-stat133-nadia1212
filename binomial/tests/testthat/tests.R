@@ -19,7 +19,7 @@ test_that("check_success works as expected", {
   expect_error(check_success(-8))
 })
 
-context("Auxiliary functions")
+context("Summary Measures")
 
 test_that("aux_mean works as expected", {
   expect_equal(aux_mean(10, .3), 3)
@@ -49,7 +49,7 @@ test_that("aux_kurtosis works as expected", {
 
 })
 
-context("main functions")
+context("Binomial functions")
 
 test_that("bin_choose works as expected", {
   expect_equal(bin_choose(n = 5, k = 2), 10)
@@ -61,6 +61,25 @@ test_that("bin_probability works as expected", {
   expect_error(bin_probability(2, 5, 5))
   expect_equal(bin_probability(2, 5, .5), .3125)
   expect_equal(bin_probability(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
+
+})
+
+test_that("bin_distrubution works as expected", {
+  res <- data.frame(c(0, 1, 2, 3, 4, 5), c(0.03125, 0.15625, 0.31250, 0.31250, 0.15625, 0.03125))
+  colnames(res) <- c("success", "probability")
+  expect_error(bin_distrubtion(2, 5, 5))
+  expect_equal(bin_distribution(5, .5), res)
+  #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
+
+})
+
+test_that("bin_cumulative works as expected", {
+  res <- data.frame(c(0, 1, 2, 3, 4, 5), c(0.03125, 0.15625, 0.31250, 0.31250, 0.15625, 0.03125),
+                    c(0.03125, 0.18750, 0.50000, 0.81250, 0.96875, 1.00000))
+  colnames(res) <- c("success", "probability", "cumulative")
+  expect_error(bin_cumulative(2, 5, 5))
+  expect_equal(bin_cumulative(5, .5), res)
+  #expect_equal(bin_distribution(success = 0:2, trials = 5, prob = 0.5), c(0.03125, 0.15625, 0.31250))
 
 })
 

@@ -110,7 +110,9 @@ bin_distribution <- function(trials, prob){
 }
 #' @export
 plot.bindis <- function(dis){
-  plot(dis)
+  library(ggplot2)
+  ggplot(dis, aes(x=success, y=probability))+
+    geom_bar(stat="identity")
 }
 
 #' @title bin_cumulative
@@ -128,6 +130,33 @@ bin_cumulative <- function(trials, prob){
   }
   df <- data.frame(success, probability, cumulative)
   return(df)
+}
+
+#' @export
+plot.bincum <- function(cum){
+  library(ggplot2)
+  ggplot(cum, aes(x=success, y=cumulative))+
+    geom_line(stat="identity")
+}
+
+
+#' @title bin_variable
+#' @description creates object of class binvar
+#' @param trials number of trials
+#' @param prob probability of success
+#' @return object with list of trials and probs
+bin_variable <- function(trials, prob){
+  check_trials(trials)
+  check_prob(prob)
+  binvar <- list(trials="trials", prob="prob")
+  class(binvar) <- binvar
+  return(binvar)
+}
+
+#' @export
+print.binvar(){
+  return("Binomial variable \n Parameters \n -number of trials: " + trials +
+           "-prob of success: " + prob)
 }
 
 

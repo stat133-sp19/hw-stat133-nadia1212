@@ -1,0 +1,21 @@
+---
+title: "Intro to Binomial"
+author: "Nadia Aquil"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Binomial
+The package "binomial" implements functions for calculating probabilities of a binomial random variable, as well as calculations for the probability distribution, expected value, variance, and other measures. 
+
+## Creating a binomial variable
+
+
