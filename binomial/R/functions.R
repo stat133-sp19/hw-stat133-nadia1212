@@ -17,7 +17,6 @@ check_trials <- function(trials){
 
 #checks if input sucess is valid value for number of success
 check_success <- function(success, trials){
-
     for (i in success){
       if (i > trials){
         stop("success cannot be greater than trials")
@@ -62,6 +61,7 @@ aux_kurtosis <- function(trials, prob){
   return(t/aux_variance(trials, prob))
 }
 
+#' @export
 #' @title bin_choose
 #' @description finds number of combinations in which k success can occur in n trials
 #' @param n number of trials
@@ -84,6 +84,7 @@ bin_choose <- function(n, k){
   return(result)
 }
 
+#' @export
 #' @title bin_probability
 #' @description finds number of combinations in which k success can occur in n trials
 #' @param trials number of trials
@@ -94,11 +95,11 @@ bin_probability <- function(success, trials, prob){
   check_trials(trials)
   check_prob(prob)
   check_success(success, trials)
-
   return(bin_choose(trials, success) * (prob^success)*((1-prob)^(trials - success)))
 
 }
 
+#' @export
 #' @title bin_distribution
 #' @description creates data frame of binomial distribution
 #' @param trials number of trials
@@ -112,13 +113,15 @@ bin_distribution <- function(trials, prob){
   class(df) <- c("bindis", "data.frame")
   return(df)
 }
+
 #' @export
 plot.bindis <- function(dis){
-  library(ggplot2)
-  ggplot(dis, aes(x=success, y=probability))+
+
+  ggplot2::ggplot(dis, aes(x=success, y=probability))+
     geom_bar(stat="identity")
 }
 
+#' @export
 #' @title bin_cumulative
 #' @description creates data frame of binomial distribution
 #' @param trials number of trials
@@ -144,7 +147,7 @@ plot.bincum <- function(cum){
     geom_line(stat="identity")
 }
 
-
+#' @export
 #' @title bin_variable
 #' @description creates object of class binvar
 #' @param trials number of trials
@@ -186,6 +189,7 @@ print.summary.binvar <- function(summary.binvar){
       "\n - kurtosis: ", s$kurtosis)
 }
 
+#' @export
 #' @title bin_mean
 #' @description finds expected value of distribution
 #' @param trials number of trials
@@ -197,6 +201,7 @@ bin_mean <- function(trials, prob){
   return(aux_mean(trials, prob))
 }
 
+#' @export
 #' @title bin_variance
 #' @description finds variance of distribution
 #' @param trials number of trials
@@ -208,6 +213,7 @@ bin_variance <- function(trials, prob){
   return(aux_variance(trials, prob))
 }
 
+#' @export
 #' @title bin_mode
 #' @description finds mode of distribution
 #' @param trials number of trials
@@ -219,6 +225,7 @@ bin_mode <- function(trials, prob){
   return(aux_mode(trials, prob))
 }
 
+#' @export
 #' @title bin_skewness
 #' @description finds skewness of distribution
 #' @param trials number of trials
@@ -230,6 +237,7 @@ bin_skewness <- function(trials, prob){
   return(aux_skewness(trials, prob))
 }
 
+#' @export
 #' @title bin_kurtosis
 #' @description finds kurtosis of distribution
 #' @param trials number of trials

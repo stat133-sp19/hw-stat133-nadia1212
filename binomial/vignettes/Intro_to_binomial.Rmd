@@ -1,21 +1,54 @@
 ---
 title: "Intro to Binomial"
 author: "Nadia Aquil"
-date: "`r Sys.Date()`"
+date: "5/2/2019"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Intro to Binomial}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(binomial)
+library(ggplot2)
+source("../R/functions.R")
 ```
 
-## Binomial
+# Binomial Package
 The package "binomial" implements functions for calculating probabilities of a binomial random variable, as well as calculations for the probability distribution, expected value, variance, and other measures. 
 
-## Creating a binomial variable
+## Calculating a probability
+You can calculate the number of combinations in which k success can occur in n trials by using the function bin_choose()
+```{r}
+bin_choose(n = 5, k = 2)
+```
+You can calculate the probability of getting k success in n trials with a certain probability p of success by using bin_probability/
+```{r}
+# probability of getting 2 successes in 5 trials
+# (assuming prob of success = 0.5)
+bin_probability(success = 2, trials = 5, prob = .5)
+```
 
+##Creating and plotting a binary distribution
+You can use the function bin_distribution() to create a dataframe containing the values of the probability distribution for each possible number of successes. 
+```{r}
+# binomial probability distribution
+bin_distribution(trials = 5, prob = 0.5)
+
+#plot the distribution
+plot(bin_distribution(trials = 5, prob = 0.5))
+```
+
+##Creating and plotting a cumulative binomial distribution
+You can use the function bin_cumulative() to create a dataframe containing the values of the cumulative probability distribution for each possible number of
+successes. 
+```{r}
+# binomial probability distribution
+bin_cumulative(trials = 5, prob = 0.5)
+
+#plot the distribution
+plot(bin_cumulative(trials = 5, prob = 0.5))
+```
 
