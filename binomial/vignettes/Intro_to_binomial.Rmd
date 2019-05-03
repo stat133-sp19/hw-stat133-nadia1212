@@ -17,14 +17,22 @@ source("../R/functions.R")
 ```
 
 # Binomial Package
-The package "binomial" implements functions for calculating probabilities of a binomial random variable, as well as calculations for the probability distribution, expected value, variance, and other measures. 
+The package "binomial" implements functions for calculating probabilities of a binomial random variable, as well as calculations for the probability distribution, expected value, variance, and other measures. The Binomial distribution is a probability distribution for a discrete random variable, and is used to calculate probabilities about the number of successes in a fixed number of trials performed under identical condiitions, assuming a constant probability of success on each trial. The formula for binomial probability is as follows:
+$$\textit{Pr} (\textit{X = k}) =  {n \choose k} (\textit{p}^k (1 - p)^{(n - k)} $$ 
+where: 
+
+* n is the number of trials, and must be greater than or equal to 0
+* p is the probability of success on each trial
+* 1 - p is the probablity of failure on each trial
+* k represents the number of successes in n trials
+
 
 ## Calculating a probability
-You can calculate the number of combinations in which k success can occur in n trials by using the function bin_choose()
+You can calculate the number of combinations in which k success can occur in n trials by using the function `bin_choose()`.
 ```{r}
 bin_choose(n = 5, k = 2)
 ```
-You can calculate the probability of getting k success in n trials with a certain probability p of success by using bin_probability/
+You can calculate the probability of getting k success in n trials with a certain probability p of success by using `bin_probability`
 ```{r}
 # probability of getting 2 successes in 5 trials
 # (assuming prob of success = 0.5)
@@ -32,7 +40,7 @@ bin_probability(success = 2, trials = 5, prob = .5)
 ```
 
 ##Creating and plotting a binary distribution
-You can use the function bin_distribution() to create a dataframe containing the values of the probability distribution for each possible number of successes. 
+You can use the function `bin_distribution()` to create a dataframe containing the values of the probability distribution for each possible number of successes. 
 ```{r}
 # binomial probability distribution
 bin_distribution(trials = 5, prob = 0.5)
@@ -42,7 +50,7 @@ plot(bin_distribution(trials = 5, prob = 0.5))
 ```
 
 ##Creating and plotting a cumulative binomial distribution
-You can use the function bin_cumulative() to create a dataframe containing the values of the cumulative probability distribution for each possible number of
+You can use the function `bin_cumulative()` to create a dataframe containing the values of the cumulative probability distribution for each possible number of
 successes. 
 ```{r}
 # binomial probability distribution
@@ -53,7 +61,7 @@ plot(bin_cumulative(trials = 5, prob = 0.5))
 ```
 
 ##Creating a binomial random variable object
-The function bin_variable() creates a binomial random variable object of class "binvar". It creates a object with a list of named elements of the variable object, such as number of trials, probability of success, and other summary statistics. By using the methods print, summary, or print.summary on this object, you can see the various statistics of the random variable object. 
+The function `bin_variable()` creates a binomial random variable object of class **binvar**. It creates a object with a list of named elements of the variable object, such as number of trials, probability of success, and other summary statistics. By using the methods print, summary, or print.summary on this object, you can see the various statistics of the random variable object. 
 ```{r}
 bin1 <- bin_variable(trials = 10, p = 0.3)
 bin1
@@ -62,7 +70,15 @@ bin_sum
 ```
 
 ##Functions of measures
-The binomial package also provides functions for each of the following measures: mean, variance, mode, skewness, and kurtosis. These functions are invoked as follows:
+The binomial package also provides functions for each of the following measures: 
+
+* mean: the expected number of successes in n trials, $$\textit{np}$$ 
+* variance: $$\textit{np}(1 - \textit{p})$$ 
+* mode: the most likely number of success in n trials, calculated as the greatest integer less than or equal to $$\textit{np} + \textit{p}$$
+* skewness: measure of the assymetry of the probability distribtuion of a randon variable about its mean, $$\frac{(1 - \textit{p})}{\sqrt{\textit{np}(1-\textit{p})}}$$ 
+* kurtosis: measure of "tailedness" of probability distribution of random variable, $$\frac{1 - 6\textit{p}(1 - \textit{p})}{\sqrt{\textit{np}(1-\textit{p})}}$$ 
+
+These functions are invoked as follows:
 
 ```{r}
 #summary statistics binomial variable with 10 trials and .3 probability of success per trial

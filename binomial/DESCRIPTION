@@ -1,11 +1,11 @@
 Package: binomial
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Binomial random variable calculations
 Version: 0.1.0
 Author: Nadia Aquil
 Maintainer: Nadia Aquil <nadia@berkeley.edu>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Calculates probabilities about the number of successes in a fixed number of random trials performed
+under identical conditions (assuming a constant probability of success on each trial). 
 License: None
 VignetteBuilder: knitr
 Encoding: UTF-8
